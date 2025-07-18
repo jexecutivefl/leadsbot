@@ -1,0 +1,59 @@
+# Leadsbot Development Rules
+
+## Project Context
+- Building an AI-powered real estate lead follow-up agent
+- React + TypeScript + Vite + AWS Amplify Gen2
+- Custom CSS modules (NO Tailwind)
+- Premium theme styling (Cuba, Porto, Metronic quality)
+
+## Styling Requirements
+- Use CSS Modules for all styling
+- Create premium admin theme with sophisticated design
+- Color palette: Deep blues (#1e3a8a, #3b82f6), elegant grays (#1f2937, #374151)
+- Typography: Inter font family, clear hierarchy
+- Spacing: 8px-based system (8, 16, 24, 32, 48, 64px)
+- Components: Cards, buttons, forms, tables with subtle shadows and modern styling
+
+## Architecture Guidelines
+- Component-based structure with reusable UI components
+- CSS Modules naming: `ComponentName.module.css`
+- Global styles in `src/styles/global.css`
+- Design tokens in `src/styles/tokens.css`
+- Responsive design with mobile-first approach
+
+## Code Quality
+- TypeScript strict mode
+- ESLint compliance
+- Semantic HTML and accessibility
+- Performance optimization
+- Clean, maintainable code structure
+
+## Dependencies
+- Only use existing packages in package.json
+- No additional third-party libraries without approval
+- Leverage AWS Amplify UI components when possible
+
+## File Structure
+```
+src/
+├── components/
+│   ├── ui/           # Reusable UI components
+│   ├── layout/       # Layout components
+│   └── forms/        # Form components
+├── styles/
+│   ├── global.css    # Global styles
+│   ├── tokens.css    # Design tokens
+│   └── components/   # Component-specific styles
+├── pages/            # Page components
+├── hooks/            # Custom React hooks
+├── utils/            # Utility functions
+└── types/            # TypeScript type definitions
+```
+
+## Premium Theme Standards
+- Professional admin dashboard aesthetic
+- Clean, modern interface design
+- Consistent spacing and typography
+- Subtle animations and micro-interactions
+- Dark/light theme support
+- Mobile-responsive design 
