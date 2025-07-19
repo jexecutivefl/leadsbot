@@ -3,8 +3,9 @@ import './App.css';
 import Layout from './components/layout/Layout';
 import Login from './pages/auth/Login';
 import Dashboard from './pages/dashboard';
+import LeadsPage from './pages/leads';
 
-type CurrentPage = 'login' | 'dashboard';
+type CurrentPage = 'login' | 'dashboard' | 'leads';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<CurrentPage>('login');
@@ -34,35 +35,64 @@ function App() {
           justifyContent: 'space-between', 
           alignItems: 'center',
           padding: '1rem',
-          backgroundColor: 'var(--color-primary-50)',
+          backgroundColor: 'var(--color-success-50)',
           borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-primary-200)'
+          border: '1px solid var(--color-success-200)'
         }}>
           <div>
-            <h2 style={{ margin: 0, color: 'var(--color-primary-800)' }}>
-              🎉 Phase 2 Complete!
+            <h2 style={{ margin: 0, color: 'var(--color-success-800)' }}>
+              🚀 Phase 3 Complete!
             </h2>
-            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--color-primary-700)' }}>
-              Layout with Sidebar, Login page, and Dashboard are now ready
+            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--color-success-700)' }}>
+              Lead Management with Table, Cards, Search & Filtering ready
             </p>
           </div>
-          <button
-            onClick={handleLogout}
-            style={{
-              padding: '0.5rem 1rem',
-              backgroundColor: 'var(--color-primary-600)',
-              color: 'white',
-              border: 'none',
-              borderRadius: 'var(--radius-md)',
-              cursor: 'pointer'
-            }}
-          >
-            View Login Page
-          </button>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <button
+              onClick={() => setCurrentPage('dashboard')}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: currentPage === 'dashboard' ? 'var(--color-success-600)' : 'var(--color-success-400)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer'
+              }}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => setCurrentPage('leads')}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: currentPage === 'leads' ? 'var(--color-success-600)' : 'var(--color-success-400)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer'
+              }}
+            >
+              Leads
+            </button>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: 'var(--color-gray-600)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer'
+              }}
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
       
       {currentPage === 'dashboard' && <Dashboard />}
+      {currentPage === 'leads' && <LeadsPage />}
     </Layout>
   );
 }

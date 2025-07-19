@@ -1,0 +1,551 @@
+/* Table Container */
+.tableContainer {
+  background-color: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  min-height: 200px;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.tableLoading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Table Header */
+.tableHeader {
+  background-color: var(--color-gray-50);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.tableHeaderCell {
+  padding: var(--space-4) var(--space-3);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-gray-200);
+  position: relative;
+}
+
+.tableHeaderCell.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition-fast);
+}
+
+.tableHeaderCell.sortable:hover {
+  background-color: var(--color-gray-100);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sortIcon {
+  display: flex;
+  align-items: center;
+  color: var(--color-gray-400);
+  transition: color var(--transition-fast);
+}
+
+.tableHeaderCell.sortable:hover .sortIcon {
+  color: var(--color-gray-600);
+}
+
+/* Table Body */
+.tableBody {
+  background-color: white;
+}
+
+.tableRow {
+  transition: background-color var(--transition-fast);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: var(--color-gray-50);
+}
+
+.clickableRow {
+  cursor: pointer;
+}
+
+.clickableRow:hover {
+  background-color: var(--color-primary-50);
+}
+
+.selectedRow {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+}
+
+.selectedRow:hover {
+  background-color: var(--color-primary-100);
+}
+
+.tableCell {
+  padding: var(--space-4) var(--space-3);
+  color: var(--color-gray-900);
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+/* Checkbox Styling */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkboxCustom {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  background-color: white;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.checkbox:checked + .checkboxCustom {
+  background-color: var(--color-primary-600);
+  border-color: var(--color-primary-600);
+}
+
+.checkbox:checked + .checkboxCustom::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox:indeterminate + .checkboxCustom {
+  background-color: var(--color-primary-600);
+  border-color: var(--color-primary-600);
+}
+
+.checkbox:indeterminate + .checkboxCustom::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 7px;
+  width: 8px;
+  height: 2px;
+  background-color: white;
+  transform: none;
+}
+
+.checkbox:focus + .checkboxCustom {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.checkbox:hover + .checkboxCustom {
+  border-color: var(--color-primary-500);
+}
+
+/* Loading State */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-gray-600);
+  gap: var(--space-4);
+}
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary-600);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    stroke-dashoffset: 31.416;
+  }
+  50% {
+    transform: rotate(180deg);
+    stroke-dashoffset: 7.854;
+  }
+  100% {
+    transform: rotate(360deg);
+    stroke-dashoffset: 31.416;
+  }
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-gray-500);
+  gap: var(--space-4);
+}
+
+.emptyIcon {
+  color: var(--color-gray-400);
+}
+
+.emptyMessage {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  margin: 0;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
+}
+
+.paginationInfo {
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pageNumbers {
+  display: flex;
+  gap: var(--space-1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tableHeaderCell,
+  .tableCell {
+    padding: var(--space-3) var(--space-2);
+    font-size: var(--font-size-xs);
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  .paginationControls {
+    justify-content: center;
+  }
+
+  .paginationInfo {
+    text-align: center;
+    order: -1;
+  }
+
+  .pageNumbers {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .tableWrapper {
+    min-height: 150px;
+  }
+
+  .tableHeaderCell,
+  .tableCell {
+    padding: var(--space-2);
+  }
+
+  .headerContent {
+    gap: var(--space-1);
+  }
+
+  .sortIcon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .checkboxCustom {
+    width: 14px;
+    height: 14px;
+  }
+
+  .checkbox:checked + .checkboxCustom::after {
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 8px;
+  }
+
+  .loadingState,
+  .emptyState {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .pagination {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .tableContainer {
+  background-color: var(--color-gray-800);
+  border-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableHeader {
+  background-color: var(--color-gray-700);
+  border-bottom-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .tableHeaderCell {
+  color: var(--color-gray-300);
+  border-bottom-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .tableHeaderCell.sortable:hover {
+  background-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .tableBody {
+  background-color: var(--color-gray-800);
+}
+
+[data-theme="dark"] .tableRow {
+  border-bottom-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableRow:hover {
+  background-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .clickableRow:hover {
+  background-color: var(--color-primary-900);
+}
+
+[data-theme="dark"] .selectedRow {
+  background-color: var(--color-primary-900);
+  border-color: var(--color-primary-700);
+}
+
+[data-theme="dark"] .selectedRow:hover {
+  background-color: var(--color-primary-800);
+}
+
+[data-theme="dark"] .tableCell {
+  color: var(--color-gray-200);
+  border-bottom-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .checkboxCustom {
+  background-color: var(--color-gray-700);
+  border-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .checkbox:hover + .checkboxCustom {
+  border-color: var(--color-primary-400);
+}
+
+[data-theme="dark"] .pagination {
+  background-color: var(--color-gray-700);
+  border-top-color: var(--color-gray-600);
+}
+
+[data-theme="dark"] .paginationInfo {
+  color: var(--color-gray-400);
+}
+
+[data-theme="dark"] .loadingState,
+[data-theme="dark"] .emptyState {
+  color: var(--color-gray-400);
+}
+
+[data-theme="dark"] .emptyIcon {
+  color: var(--color-gray-500);
+}
+
+[data-theme="dark"] .emptyMessage {
+  color: var(--color-gray-400);
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .tableContainer {
+    border-width: 2px;
+  }
+
+  .tableHeaderCell,
+  .tableCell {
+    border-bottom-width: 2px;
+  }
+
+  .checkboxCustom {
+    border-width: 2px;
+  }
+
+  .selectedRow {
+    border: 2px solid var(--color-primary-600);
+  }
+}
+
+/* Animation Overrides for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .tableRow,
+  .tableHeaderCell,
+  .checkboxCustom,
+  .sortIcon {
+    transition: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .pagination,
+  .checkboxLabel {
+    display: none;
+  }
+
+  .tableContainer {
+    border: 1px solid #000;
+    box-shadow: none;
+  }
+
+  .tableRow:hover {
+    background-color: transparent;
+  }
+}
+
+/* Focus Management */
+.tableHeaderCell:focus,
+.tableRow:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: -2px;
+}
+
+/* Table Actions Integration */
+.tableCell .tableActions {
+  display: flex;
+  gap: var(--space-1);
+  justify-content: flex-end;
+}
+
+.tableCell .tableActions button {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-xs);
+}
+
+/* Status Badge in Table */
+.tableCell .statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  text-transform: capitalize;
+}
+
+/* Avatar in Table */
+.tableCell .tableAvatar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tableCell .avatarInitials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-700);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+}
+
+.tableCell .avatarInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.tableCell .avatarName {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tableCell .avatarEmail {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .tableCell .avatarInitials {
+  background-color: var(--color-primary-900);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .tableCell .avatarName {
+  color: var(--color-gray-200);
+}
+
+[data-theme="dark"] .tableCell .avatarEmail {
+  color: var(--color-gray-400);
+}

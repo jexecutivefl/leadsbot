@@ -243,6 +243,33 @@ export interface UserSettings {
   };
 }
 
+// Table Component Types
+export interface TableColumn<T = any> {
+  key: string;
+  header: string;
+  sortable?: boolean;
+  width?: string;
+  render?: (item: T) => React.ReactNode;
+}
+
+export interface TablePagination {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+export interface TableProps<T extends { id: string }> {
+  data: T[];
+  columns: TableColumn<T>[];
+  loading?: boolean;
+  emptyMessage?: string;
+  onRowClick?: (item: T) => void;
+  selectedRows?: string[];
+  onSelectionChange?: (selectedIds: string[]) => void;
+  pagination?: TablePagination;
+  className?: string;
+}
+
 // Error Types
 export interface AppError {
   code: string;
