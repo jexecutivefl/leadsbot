@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       if (onChange) {
-        onChange(e.target.value);
+        onChange(e);
       }
     };
 

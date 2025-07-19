@@ -9,16 +9,24 @@ const Card: React.FC<CardProps> = ({
   actions,
   variant = 'default',
   className = '',
+  onClick,
   ...props
 }) => {
   const cardClasses = [
     styles.card,
     styles[`card${variant.charAt(0).toUpperCase() + variant.slice(1)}`],
+    onClick && styles.cardClickable,
     className
   ].filter(Boolean).join(' ');
 
   return (
-    <div className={cardClasses} {...props}>
+    <div 
+      className={cardClasses} 
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      {...props}
+    >
       {(title || subtitle || actions) && (
         <div className={styles.cardHeader}>
           <div className={styles.cardHeaderContent}>
