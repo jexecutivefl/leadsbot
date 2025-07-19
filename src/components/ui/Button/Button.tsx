@@ -15,10 +15,17 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   ...props
 }) => {
+  const sizeMap: { [key: string]: string } = {
+    'sm': 'Small',
+    'small': 'Small',
+    'medium': 'Medium',
+    'large': 'Large'
+  };
+
   const buttonClasses = [
     styles.button,
     styles[`button${variant.charAt(0).toUpperCase() + variant.slice(1)}`],
-    styles[`button${size.charAt(0).toUpperCase() + size.slice(1)}`],
+    styles[`button${sizeMap[size] || 'Medium'}`],
     disabled && styles.buttonDisabled,
     loading && styles.buttonLoading,
     className

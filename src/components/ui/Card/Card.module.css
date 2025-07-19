@@ -8,6 +8,20 @@
   position: relative;
 }
 
+.cardClickable {
+  cursor: pointer;
+}
+
+.cardClickable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cardClickable:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
 /* Card Variants */
 .cardDefault {
   box-shadow: var(--shadow-sm);

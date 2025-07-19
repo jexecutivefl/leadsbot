@@ -49,10 +49,10 @@ const Login: React.FC<LoginPageProps> = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof LoginFormData) => (value: string | boolean) => {
+  const handleInputChange = (field: keyof LoginFormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: e.target.value
     }));
     
     // Clear error when user starts typing
@@ -189,7 +189,7 @@ const Login: React.FC<LoginPageProps> = ({
                 <input
                   type="checkbox"
                   checked={formData.rememberMe}
-                  onChange={(e) => handleInputChange('rememberMe')(e.target.checked)}
+                  onChange={(e) => setFormData(prev => ({ ...prev, rememberMe: e.target.checked }))}
                   className={styles.checkbox}
                 />
                 <span className={styles.checkboxText}>Remember me</span>

@@ -111,7 +111,7 @@ export interface FormField {
 // UI Component Types
 export interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive';
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large' | 'sm';
   disabled?: boolean;
   loading?: boolean;
   icon?: React.ReactNode;
@@ -123,15 +123,18 @@ export interface ButtonProps {
 }
 
 export interface InputProps {
-  type?: 'text' | 'email' | 'password' | 'textarea' | 'select';
+  type?: 'text' | 'email' | 'password' | 'textarea' | 'select' | 'number' | 'tel';
   label?: string;
   placeholder?: string;
-  value?: string;
-  onChange?: (value: string) => void;
+  value?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   error?: string;
   helperText?: string;
   disabled?: boolean;
   required?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
   icon?: React.ReactNode;
   iconPosition?: 'leading' | 'trailing';
   className?: string;
@@ -144,6 +147,7 @@ export interface CardProps {
   actions?: React.ReactNode;
   variant?: 'default' | 'elevated' | 'outlined';
   className?: string;
+  onClick?: () => void;
 }
 
 export interface ModalProps {

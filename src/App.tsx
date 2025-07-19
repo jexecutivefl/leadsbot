@@ -4,8 +4,10 @@ import Layout from './components/layout/Layout';
 import Login from './pages/auth/Login';
 import Dashboard from './pages/dashboard';
 import LeadsPage from './pages/leads';
+import UserSettings from './pages/settings/UserSettings';
+import SystemSettings from './pages/settings/SystemSettings';
 
-type CurrentPage = 'login' | 'dashboard' | 'leads';
+type CurrentPage = 'login' | 'dashboard' | 'leads' | 'user-settings' | 'system-settings';
 
 function App() {
   const [currentPage, setCurrentPage] = useState<CurrentPage>('login');
@@ -35,28 +37,29 @@ function App() {
           justifyContent: 'space-between', 
           alignItems: 'center',
           padding: '1rem',
-          backgroundColor: 'var(--color-success-50)',
+          backgroundColor: 'var(--color-primary-50)',
           borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-success-200)'
+          border: '1px solid var(--color-primary-200)'
         }}>
           <div>
-            <h2 style={{ margin: 0, color: 'var(--color-success-800)' }}>
-              🚀 Phase 3 Complete!
+            <h2 style={{ margin: 0, color: 'var(--color-primary-800)' }}>
+              🤖 Phase 4 Complete!
             </h2>
-            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--color-success-700)' }}>
-              Lead Management with Table, Cards, Search & Filtering ready
+            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--color-primary-700)' }}>
+              AI Integration & Settings - Chat Interface, AI Configuration & System Settings
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <button
               onClick={() => setCurrentPage('dashboard')}
               style={{
                 padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'dashboard' ? 'var(--color-success-600)' : 'var(--color-success-400)',
+                backgroundColor: currentPage === 'dashboard' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
                 color: 'white',
                 border: 'none',
                 borderRadius: 'var(--radius-md)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '0.875rem'
               }}
             >
               Dashboard
@@ -65,14 +68,43 @@ function App() {
               onClick={() => setCurrentPage('leads')}
               style={{
                 padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'leads' ? 'var(--color-success-600)' : 'var(--color-success-400)',
+                backgroundColor: currentPage === 'leads' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
                 color: 'white',
                 border: 'none',
                 borderRadius: 'var(--radius-md)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '0.875rem'
               }}
             >
               Leads
+            </button>
+            <button
+              onClick={() => setCurrentPage('user-settings')}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: currentPage === 'user-settings' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer',
+                fontSize: '0.875rem'
+              }}
+            >
+              User Settings
+            </button>
+            <button
+              onClick={() => setCurrentPage('system-settings')}
+              style={{
+                padding: '0.5rem 1rem',
+                backgroundColor: currentPage === 'system-settings' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-md)',
+                cursor: 'pointer',
+                fontSize: '0.875rem'
+              }}
+            >
+              System Settings
             </button>
             <button
               onClick={handleLogout}
@@ -82,7 +114,8 @@ function App() {
                 color: 'white',
                 border: 'none',
                 borderRadius: 'var(--radius-md)',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontSize: '0.875rem'
               }}
             >
               Logout
@@ -93,6 +126,8 @@ function App() {
       
       {currentPage === 'dashboard' && <Dashboard />}
       {currentPage === 'leads' && <LeadsPage />}
+      {currentPage === 'user-settings' && <UserSettings />}
+      {currentPage === 'system-settings' && <SystemSettings />}
     </Layout>
   );
 }

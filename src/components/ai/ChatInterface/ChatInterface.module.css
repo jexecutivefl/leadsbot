@@ -1,0 +1,353 @@
+.chatInterface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-background);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  background: var(--color-background-alt);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xl);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  opacity: 0.7;
+}
+
+.emptyState h3 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: var(--font-size-md);
+  max-width: 300px;
+}
+
+.messagesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.messageWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.messageWrapper.user {
+  flex-direction: row-reverse;
+}
+
+.messageWrapper.ai {
+  flex-direction: row;
+}
+
+.messageContent {
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.messageText {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.user .messageText {
+  background: var(--color-primary-500);
+  color: white;
+  border-bottom-right-radius: var(--radius-xs);
+}
+
+.ai .messageText {
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: var(--radius-xs);
+}
+
+.messageTime {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  padding: 0 var(--spacing-sm);
+}
+
+.user .messageTime {
+  text-align: right;
+}
+
+.ai .messageTime {
+  text-align: left;
+}
+
+.messageAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-md);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.user .messageAvatar {
+  background: var(--color-primary-100);
+  border-color: var(--color-primary-200);
+}
+
+.ai .messageAvatar {
+  background: var(--color-background-alt);
+  border-color: var(--color-border);
+}
+
+.typingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacing-xs) 0;
+}
+
+.typingIndicator span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-secondary);
+  animation: typingDots 1.4s infinite ease-in-out;
+}
+
+.typingIndicator span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typingIndicator span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.inputForm {
+  padding: var(--spacing-md);
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+}
+
+.inputContainer {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-end;
+}
+
+.input {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--color-primary-500);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.sendButton {
+  padding: var(--spacing-sm);
+  background: var(--color-primary-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: var(--color-primary-600);
+  transform: translateY(-1px);
+}
+
+.sendButton:active {
+  transform: translateY(0);
+}
+
+.sendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+}
+
+.loadingText {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.loadingText::before {
+  content: '⟳';
+  animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typingDots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .messagesContainer {
+    padding: var(--spacing-sm);
+  }
+  
+  .messageContent {
+    max-width: 85%;
+  }
+  
+  .messageText {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .messageAvatar {
+    width: 28px;
+    height: 28px;
+    font-size: var(--font-size-sm);
+  }
+  
+  .inputForm {
+    padding: var(--spacing-sm);
+  }
+  
+  .input {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .sendButton {
+    width: 40px;
+    height: 40px;
+    padding: var(--spacing-xs);
+  }
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .input {
+    background: var(--color-background-alt);
+  }
+  
+  .ai .messageText {
+    background: var(--color-background-alt);
+    border-color: var(--color-border-dark);
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .messageText {
+    border-width: 2px;
+  }
+  
+  .input {
+    border-width: 2px;
+  }
+  
+  .sendButton {
+    border: 2px solid transparent;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .messageWrapper {
+    animation: none;
+  }
+  
+  .typingIndicator span {
+    animation: none;
+  }
+  
+  .loadingSpinner {
+    animation: none;
+  }
+  
+  .sendButton {
+    transition: none;
+  }
+}
