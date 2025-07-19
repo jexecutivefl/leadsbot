@@ -1,0 +1,406 @@
+/* Sidebar Base */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: var(--sidebar-width);
+  background-color: white;
+  border-right: 1px solid var(--color-gray-200);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-normal) ease-in-out;
+  z-index: var(--z-fixed);
+  overflow: hidden;
+}
+
+.sidebarOpen {
+  transform: translateX(0);
+}
+
+.sidebarClosed {
+  transform: translateX(-100%);
+}
+
+/* Mobile Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: calc(var(--z-fixed) - 1);
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+
+/* Sidebar Content */
+.sidebarContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Sidebar Header */
+.sidebarHeader {
+  padding: var(--space-6);
+  border-bottom: 1px solid var(--color-gray-200);
+  flex-shrink: 0;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sidebarLogoText {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+}
+
+/* Navigation */
+.navigation {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4) 0;
+}
+
+.navigation::-webkit-scrollbar {
+  width: 4px;
+}
+
+.navigation::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navigation::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+}
+
+.navigation::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+
+.navigationSection {
+  padding: 0 var(--space-4);
+}
+
+/* Navigation Items */
+.navigationItem {
+  margin-bottom: var(--space-1);
+}
+
+.navigationButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  color: var(--color-gray-700);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+}
+
+.navigationButton:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
+}
+
+.navigationButtonActive {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+
+.navigationButtonActive:hover {
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-800);
+}
+
+.navigationButtonChild {
+  padding-left: var(--space-8);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-normal);
+}
+
+.navigationButtonContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: 1;
+  min-width: 0;
+}
+
+.navigationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.navigationLabel {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navigationBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--space-2);
+  background-color: var(--color-primary-500);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+}
+
+.navigationButtonActive .navigationBadge {
+  background-color: var(--color-primary-600);
+}
+
+.navigationChevron {
+  color: var(--color-gray-400);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.navigationChevronExpanded {
+  transform: rotate(90deg);
+}
+
+/* Navigation Children */
+.navigationChildren {
+  overflow: hidden;
+  transition: all var(--transition-normal) ease-in-out;
+  max-height: 0;
+  opacity: 0;
+}
+
+.navigationChildrenExpanded {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: var(--space-1);
+}
+
+/* Sidebar Footer */
+.sidebarFooter {
+  padding: var(--space-4) var(--space-6) var(--space-6);
+  border-top: 1px solid var(--color-gray-200);
+  flex-shrink: 0;
+}
+
+.userProfile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+  cursor: pointer;
+}
+
+.userProfile:hover {
+  background-color: var(--color-gray-100);
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.userName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.userRole {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .overlay {
+    display: none;
+  }
+  
+  .sidebar {
+    position: relative;
+    transform: none !important;
+    box-shadow: none;
+    border-right: 1px solid var(--color-gray-200);
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 280px;
+  }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .sidebar {
+  background-color: var(--color-gray-800);
+  border-right-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .sidebarHeader {
+  border-bottom-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .sidebarLogoText {
+  color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .navigationButton {
+  color: var(--color-gray-300);
+}
+
+[data-theme="dark"] .navigationButton:hover {
+  background-color: var(--color-gray-700);
+  color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .navigationButtonActive {
+  background-color: var(--color-primary-900);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .navigationButtonActive:hover {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-200);
+}
+
+[data-theme="dark"] .navigationBadge {
+  background-color: var(--color-primary-600);
+}
+
+[data-theme="dark"] .navigationButtonActive .navigationBadge {
+  background-color: var(--color-primary-500);
+}
+
+[data-theme="dark"] .sidebarFooter {
+  border-top-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .userProfile:hover {
+  background-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .userName {
+  color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .userRole {
+  color: var(--color-gray-400);
+}
+
+[data-theme="dark"] .navigation::-webkit-scrollbar-thumb {
+  background: var(--color-gray-600);
+}
+
+[data-theme="dark"] .navigation::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+/* Animation Overrides for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+  
+  .overlay {
+    animation: none;
+  }
+  
+  .navigationButton,
+  .navigationChildren,
+  .navigationChevron {
+    transition: none;
+  }
+}
+
+/* Focus States */
+.navigationButton:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+.userProfile:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Loading State */
+.sidebar[data-loading="true"] {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Compact Sidebar Variant (for future use) */
+.sidebar[data-compact="true"] {
+  width: 80px;
+}
+
+.sidebar[data-compact="true"] .sidebarLogoText,
+.sidebar[data-compact="true"] .navigationLabel,
+.sidebar[data-compact="true"] .navigationBadge,
+.sidebar[data-compact="true"] .navigationChevron,
+.sidebar[data-compact="true"] .userInfo {
+  display: none;
+}
+
+.sidebar[data-compact="true"] .navigationButton {
+  justify-content: center;
+  padding: var(--space-3);
+}
+
+.sidebar[data-compact="true"] .userProfile {
+  justify-content: center;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .navigationButton {
+    border: 1px solid transparent;
+  }
+  
+  .navigationButton:hover,
+  .navigationButton:focus {
+    border-color: currentColor;
+  }
+  
+  .navigationButtonActive {
+    border-color: var(--color-primary-700);
+  }
+}

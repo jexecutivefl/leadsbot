@@ -1,0 +1,510 @@
+/* Dashboard */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+}
+
+/* Loading State */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--space-4);
+  color: var(--color-gray-600);
+}
+
+.loadingSpinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary-600);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    stroke-dashoffset: 31.416;
+  }
+  50% {
+    transform: rotate(180deg);
+    stroke-dashoffset: 7.854;
+  }
+  100% {
+    transform: rotate(360deg);
+    stroke-dashoffset: 31.416;
+  }
+}
+
+/* Welcome Section */
+.welcomeSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-6) 0;
+}
+
+.welcomeContent {
+  flex: 1;
+}
+
+.welcomeTitle {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin: 0 0 var(--space-2) 0;
+  line-height: var(--line-height-tight);
+}
+
+.welcomeSubtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+  margin: 0;
+  line-height: var(--line-height-normal);
+}
+
+.welcomeActions {
+  display: flex;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+.statsCard {
+  transition: transform var(--transition-fast);
+}
+
+.statsCard:hover {
+  transform: translateY(-2px);
+}
+
+.statsContent {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.statsIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-xl);
+  flex-shrink: 0;
+}
+
+.statsText {
+  flex: 1;
+  min-width: 0;
+}
+
+.statsNumber {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin: 0 0 var(--space-1) 0;
+  line-height: var(--line-height-tight);
+}
+
+.statsLabel {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+  margin: 0 0 var(--space-1) 0;
+}
+
+.statsChange {
+  font-size: var(--font-size-sm);
+  color: var(--color-success-600);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Recent Leads Card */
+.recentLeadsCard {
+  overflow: hidden;
+}
+
+/* Table */
+.tableContainer {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-gray-200);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.tableHeader {
+  background-color: var(--color-gray-50);
+}
+
+.tableHeaderCell {
+  padding: var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  border-bottom: 1px solid var(--color-gray-200);
+  white-space: nowrap;
+}
+
+.tableBody {
+  background-color: white;
+}
+
+.tableRow {
+  transition: background-color var(--transition-fast);
+}
+
+.tableRow:hover {
+  background-color: var(--color-gray-50);
+}
+
+.tableRow:not(:last-child) {
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.tableCell {
+  padding: var(--space-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-900);
+  vertical-align: middle;
+}
+
+/* Lead Name */
+.leadName {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.leadAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-primary-100);
+  color: var(--color-primary-700);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.leadEmail {
+  color: var(--color-gray-600);
+}
+
+.leadSource {
+  color: var(--color-gray-700);
+}
+
+.leadDate {
+  color: var(--color-gray-500);
+  font-size: var(--font-size-xs);
+}
+
+/* Status Badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: white;
+  text-transform: capitalize;
+}
+
+/* Table Actions */
+.tableActions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* Quick Actions */
+.quickActions {
+  margin-top: var(--space-4);
+}
+
+.quickActionsCard {
+  background-color: var(--color-primary-50);
+  border-color: var(--color-primary-200);
+}
+
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.actionButton {
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 768px) {
+  .welcomeSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .welcomeActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .welcomeTitle {
+    font-size: var(--font-size-2xl);
+  }
+
+  .welcomeSubtitle {
+    font-size: var(--font-size-base);
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .statsContent {
+    gap: var(--space-3);
+  }
+
+  .statsIcon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .statsNumber {
+    font-size: var(--font-size-2xl);
+  }
+
+  .actionGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard {
+    gap: var(--space-6);
+  }
+
+  .tableContainer {
+    border-radius: var(--radius-md);
+  }
+
+  .tableHeaderCell,
+  .tableCell {
+    padding: var(--space-3);
+  }
+
+  .tableHeaderCell {
+    font-size: var(--font-size-xs);
+  }
+
+  .tableCell {
+    font-size: var(--font-size-xs);
+  }
+
+  .leadName {
+    gap: var(--space-2);
+  }
+
+  .leadAvatar {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+
+  .tableActions {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+}
+
+@media (max-width: 480px) {
+  .welcomeTitle {
+    font-size: var(--font-size-xl);
+  }
+
+  .welcomeSubtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .welcomeActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .statsContent {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-2);
+  }
+
+  .statsIcon {
+    margin: 0 auto;
+  }
+
+  /* Hide some table columns on very small screens */
+  .tableHeaderCell:nth-child(4),
+  .tableCell:nth-child(4),
+  .tableHeaderCell:nth-child(5),
+  .tableCell:nth-child(5) {
+    display: none;
+  }
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .welcomeTitle {
+  color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .welcomeSubtitle {
+  color: var(--color-gray-400);
+}
+
+[data-theme="dark"] .statsNumber {
+  color: var(--color-gray-100);
+}
+
+[data-theme="dark"] .statsLabel {
+  color: var(--color-gray-300);
+}
+
+[data-theme="dark"] .tableContainer {
+  border-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .table {
+  background-color: var(--color-gray-800);
+}
+
+[data-theme="dark"] .tableHeader {
+  background-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableHeaderCell {
+  color: var(--color-gray-300);
+  border-bottom-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableBody {
+  background-color: var(--color-gray-800);
+}
+
+[data-theme="dark"] .tableRow:hover {
+  background-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableRow:not(:last-child) {
+  border-bottom-color: var(--color-gray-700);
+}
+
+[data-theme="dark"] .tableCell {
+  color: var(--color-gray-200);
+}
+
+[data-theme="dark"] .leadAvatar {
+  background-color: var(--color-primary-900);
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .leadEmail {
+  color: var(--color-gray-400);
+}
+
+[data-theme="dark"] .leadSource {
+  color: var(--color-gray-300);
+}
+
+[data-theme="dark"] .leadDate {
+  color: var(--color-gray-500);
+}
+
+[data-theme="dark"] .quickActionsCard {
+  background-color: var(--color-primary-900);
+  border-color: var(--color-primary-800);
+}
+
+[data-theme="dark"] .loadingState {
+  color: var(--color-gray-400);
+}
+
+/* Print Styles */
+@media print {
+  .welcomeActions,
+  .tableActions,
+  .quickActions {
+    display: none;
+  }
+
+  .dashboard {
+    gap: var(--space-4);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tableContainer {
+    border: 1px solid #000;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .tableContainer {
+    border-width: 2px;
+  }
+
+  .statusBadge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Animation Overrides for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .statsCard {
+    transition: none;
+  }
+
+  .tableRow {
+    transition: none;
+  }
+
+  .spinner {
+    animation: none;
+  }
+}

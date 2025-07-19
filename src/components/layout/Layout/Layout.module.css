@@ -1,0 +1,159 @@
+/* Layout Base */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-gray-50);
+}
+
+/* Header */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-sticky);
+  transition: left var(--transition-normal) ease-in-out;
+}
+
+/* Sidebar */
+.sidebar {
+  z-index: var(--z-fixed);
+}
+
+/* Main Content */
+.main {
+  flex: 1;
+  margin-top: var(--header-height);
+  transition: margin-left var(--transition-normal) ease-in-out;
+  margin-left: 0;
+  min-height: calc(100vh - var(--header-height));
+}
+
+.mainContent {
+  padding: var(--space-6);
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Layout with Sidebar (Desktop) */
+.layoutWithSidebar .header {
+  left: var(--sidebar-width);
+}
+
+.layoutWithSidebar .main {
+  margin-left: var(--sidebar-width);
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .header {
+    left: 0 !important;
+  }
+  
+  .main {
+    margin-left: 0 !important;
+  }
+  
+  .mainContent {
+    padding: var(--space-4);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .mainContent {
+    padding: var(--space-5);
+  }
+}
+
+/* Content Spacing */
+.mainContent > * {
+  margin-bottom: var(--space-6);
+}
+
+.mainContent > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Scrollbar Styling for Main Content */
+.main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+}
+
+.main::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}
+
+/* Focus Management */
+.main:focus {
+  outline: none;
+}
+
+/* Loading State */
+.layout[data-loading="true"] {
+  pointer-events: none;
+}
+
+.layout[data-loading="true"] .main {
+  opacity: 0.7;
+}
+
+/* Dark Theme Support */
+[data-theme="dark"] .layout {
+  background-color: var(--color-gray-900);
+}
+
+[data-theme="dark"] .main::-webkit-scrollbar-track {
+  background: var(--color-gray-800);
+}
+
+[data-theme="dark"] .main::-webkit-scrollbar-thumb {
+  background: var(--color-gray-600);
+}
+
+[data-theme="dark"] .main::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-500);
+}
+
+/* Print Styles */
+@media print {
+  .header,
+  .sidebar {
+    display: none;
+  }
+  
+  .main {
+    margin-top: 0;
+    margin-left: 0 !important;
+  }
+  
+  .mainContent {
+    padding: 0;
+    max-width: none;
+  }
+}
+
+/* Animation Overrides for Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .main {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .layout {
+    border: 1px solid currentColor;
+  }
+}
