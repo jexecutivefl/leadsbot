@@ -1,8 +1,6 @@
 /* Header Base */
 .header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-sticky);
+  /* Remove duplicate positioning - handled by Layout */
   height: var(--header-height);
   background-color: white;
   border-bottom: 1px solid var(--color-gray-200);
@@ -288,10 +286,12 @@
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all var(--transition-fast);
+  color: var(--color-gray-700);
 }
 
 .profileButton:hover {
   background-color: var(--color-gray-100);
+  color: var(--color-gray-900);
 }
 
 .profileButton:focus {
@@ -304,31 +304,34 @@
   height: 32px;
   border-radius: var(--radius-full);
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .profileInfo {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  text-align: left;
+  min-width: 0;
 }
 
 .profileName {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-gray-900);
-  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profileRole {
   font-size: var(--font-size-xs);
   color: var(--color-gray-500);
-  line-height: 1.2;
 }
 
 .profileChevron {
   color: var(--color-gray-400);
   transition: transform var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .profileButton[aria-expanded="true"] .profileChevron {
@@ -339,14 +342,13 @@
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
-  width: 240px;
+  width: 280px;
   background-color: white;
   border: 1px solid var(--color-gray-200);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
   z-index: var(--z-dropdown);
   animation: dropdownSlideIn var(--transition-fast) ease-out;
-  overflow: hidden;
 }
 
 .profileDropdownHeader {
@@ -368,13 +370,11 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--color-gray-900);
-  margin: 0 0 var(--space-1) 0;
 }
 
 .profileDropdownEmail {
   font-size: var(--font-size-xs);
   color: var(--color-gray-500);
-  margin: 0;
 }
 
 .profileDropdownMenu {
@@ -386,12 +386,15 @@
   align-items: center;
   gap: var(--space-3);
   width: 100%;
-  padding: var(--space-3);
-  text-decoration: none;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
   color: var(--color-gray-700);
   font-size: var(--font-size-sm);
-  border-radius: var(--radius-md);
-  transition: all var(--transition-fast);
+  text-align: left;
 }
 
 .profileDropdownItem:hover {
@@ -399,8 +402,16 @@
   color: var(--color-gray-900);
 }
 
+.profileDropdownDivider {
+  height: 1px;
+  background-color: var(--color-gray-200);
+  margin: var(--space-2) 0;
+}
+
 .profileDropdownItem svg {
-  color: var(--color-gray-500);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* Responsive Design */
@@ -408,54 +419,53 @@
   .headerContainer {
     padding: 0 var(--space-4);
   }
-
+  
   .headerCenter {
     display: none;
   }
-
+  
   .profileInfo {
     display: none;
   }
-
+  
   .profileChevron {
     display: none;
   }
-
+  
   .notificationDropdown,
   .profileDropdown {
     width: 280px;
+    right: var(--space-4);
   }
 }
 
 @media (max-width: 480px) {
   .headerContainer {
     padding: 0 var(--space-3);
-    gap: var(--space-2);
   }
-
+  
   .logo {
     gap: var(--space-2);
   }
-
+  
   .logoText {
-    display: none;
+    font-size: var(--font-size-lg);
   }
-
+  
   .headerRight {
     gap: var(--space-2);
   }
-
+  
   .notificationDropdown,
   .profileDropdown {
     width: calc(100vw - var(--space-6));
-    left: var(--space-3);
     right: var(--space-3);
   }
 }
 
 /* Dark Theme Support */
 [data-theme="dark"] .header {
-  background-color: var(--color-gray-800);
+  background-color: var(--color-gray-900);
   border-bottom-color: var(--color-gray-700);
 }
 
@@ -464,13 +474,13 @@
 }
 
 [data-theme="dark"] .searchContainer {
-  background-color: var(--color-gray-700);
+  background-color: var(--color-gray-800);
   border-color: var(--color-gray-600);
 }
 
 [data-theme="dark"] .searchContainer:focus-within {
-  background-color: var(--color-gray-800);
-  border-color: var(--color-primary-400);
+  background-color: var(--color-gray-900);
+  border-color: var(--color-primary-500);
 }
 
 [data-theme="dark"] .searchInput {
@@ -482,7 +492,7 @@
 }
 
 [data-theme="dark"] .searchShortcut {
-  background-color: var(--color-gray-600);
+  background-color: var(--color-gray-700);
   color: var(--color-gray-300);
 }
 
@@ -493,12 +503,13 @@
 
 [data-theme="dark"] .menuToggle:hover,
 [data-theme="dark"] .notificationButton:hover {
-  background-color: var(--color-gray-700);
+  background-color: var(--color-gray-800);
   color: var(--color-gray-200);
 }
 
 [data-theme="dark"] .profileButton:hover {
-  background-color: var(--color-gray-700);
+  background-color: var(--color-gray-800);
+  color: var(--color-gray-200);
 }
 
 [data-theme="dark"] .profileName {
@@ -507,7 +518,7 @@
 
 [data-theme="dark"] .notificationDropdown,
 [data-theme="dark"] .profileDropdown {
-  background-color: var(--color-gray-800);
+  background-color: var(--color-gray-900);
   border-color: var(--color-gray-700);
 }
 
@@ -516,20 +527,16 @@
 }
 
 [data-theme="dark"] .notificationHeader h3,
-[data-theme="dark"] .profileDropdownName {
+[data-theme="dark"] .notificationContent p {
   color: var(--color-gray-100);
 }
 
 [data-theme="dark"] .notificationItem {
-  border-bottom-color: var(--color-gray-700);
+  border-bottom-color: var(--color-gray-800);
 }
 
 [data-theme="dark"] .notificationItem:hover {
-  background-color: var(--color-gray-700);
-}
-
-[data-theme="dark"] .notificationContent p {
-  color: var(--color-gray-200);
+  background-color: var(--color-gray-800);
 }
 
 [data-theme="dark"] .profileDropdownHeader {
@@ -541,6 +548,6 @@
 }
 
 [data-theme="dark"] .profileDropdownItem:hover {
-  background-color: var(--color-gray-700);
+  background-color: var(--color-gray-800);
   color: var(--color-gray-100);
 }

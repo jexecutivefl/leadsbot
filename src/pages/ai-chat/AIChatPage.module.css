@@ -1,0 +1,135 @@
+.aiChatPage {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--space-6);
+  height: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+.header {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-6);
+}
+
+.titleSection h1 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-gray-900);
+  margin-bottom: var(--space-2);
+}
+
+.titleSection p {
+  color: var(--color-gray-600);
+  font-size: var(--font-size-base);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+}
+
+.chatCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.suggestionsCard {
+  height: fit-content;
+}
+
+.suggestionsCard h3 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
+  margin-bottom: var(--space-4);
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.suggestionButton {
+  justify-content: flex-start;
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.suggestionButton:hover {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+  transform: translateX(4px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .aiChatPage {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .sidebar {
+    order: -1;
+  }
+
+  .suggestions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .suggestionButton {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .aiChatPage {
+    padding: var(--space-4);
+  }
+
+  .header {
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: stretch;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .chatContainer {
+    height: calc(100vh - 300px);
+  }
+
+  .suggestions {
+    flex-direction: column;
+  }
+
+  .suggestionButton {
+    min-width: auto;
+  }
+} 

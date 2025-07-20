@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
 import styles from './Layout.module.css';
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 
 interface LayoutProps {
-  children: React.ReactNode;
   className?: string;
 }
 
 const Layout: React.FC<LayoutProps> = ({
-  children,
   className = '',
   ...props
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -23,9 +22,9 @@ const Layout: React.FC<LayoutProps> = ({
       
       // On desktop, sidebar should be open by default
       // On mobile, sidebar should be closed by default
-      if (!mobile) {
+      if (!mobile && !isSidebarOpen) {
         setIsSidebarOpen(true);
-      } else {
+      } else if (mobile && isSidebarOpen) {
         setIsSidebarOpen(false);
       }
     };
@@ -38,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({
 
     // Cleanup event listener
     return () => window.removeEventListener('resize', checkScreenSize);
-  }, []);
+  }, [isSidebarOpen]);
 
   const handleMenuToggle = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -52,7 +51,6 @@ const Layout: React.FC<LayoutProps> = ({
 
   const layoutClasses = [
     styles.layout,
-    isSidebarOpen && !isMobile ? styles.layoutWithSidebar : '',
     className
   ].filter(Boolean).join(' ');
 
@@ -70,14 +68,27 @@ const Layout: React.FC<LayoutProps> = ({
         isOpen={isSidebarOpen}
         onClose={handleSidebarClose}
         className={styles.sidebar}
+        data-open={isSidebarOpen}
       />
 
       {/* Main Content */}
-      <main className={styles.main}>
+      <main 
+        className={styles.main}
+        data-sidebar-closed={!isSidebarOpen}
+      >
         <div className={styles.mainContent}>
-          {children}
+          <Outlet />
         </div>
       </main>
+
+      {/* Mobile overlay for sidebar */}
+      {isMobile && isSidebarOpen && (
+        <div 
+          className={styles.mobileOverlay} 
+          onClick={handleSidebarClose}
+          aria-hidden="true"
+        />
+      )}
     </div>
   );
 };

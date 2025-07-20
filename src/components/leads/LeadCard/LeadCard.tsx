@@ -143,9 +143,9 @@ const LeadCard: React.FC<LeadCardProps> = ({
           <div className={styles.leadStatus}>
             <span 
               className={styles.statusBadge}
-              style={{ backgroundColor: getStatusColor(lead.status) }}
+              style={{ backgroundColor: getStatusColor(lead.status || 'new') }}
             >
-              {lead.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              {(lead.status || 'new').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </span>
           </div>
         </div>
@@ -156,9 +156,9 @@ const LeadCard: React.FC<LeadCardProps> = ({
             <span className={styles.detailLabel}>Source:</span>
             <span className={styles.detailValue}>
               <span className={styles.sourceIcon}>
-                {getSourceIcon(lead.source)}
+                {getSourceIcon(lead.source || 'other')}
               </span>
-              {lead.source.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              {(lead.source || 'other').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </span>
           </div>
           

@@ -10,23 +10,97 @@ export interface User {
   updatedAt: string;
 }
 
-// Lead Types
+// AWS Amplify Generated Types (from Schema)
+export interface AmplifyLead {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email?: string | null;
+  phone: string;
+  status: LeadStatus | null;
+  source: LeadSource | null;
+  assignedToId?: string | null;
+  assignedTo?: any;
+  notes?: string | null;
+  documents?: any;
+  communications?: any;
+  createdAt: string;
+  updatedAt: string;
+  lastContacted?: string | null;
+  priority?: 'hot' | 'warm' | 'cold' | null;
+  tags?: string[] | null;
+  propertyInterest?: any;
+  budget?: any;
+  timeline?: 'immediate' | 'one_to_three_months' | 'three_to_six_months' | 'six_to_twelve_months' | 'just_browsing' | null;
+  preApproved?: boolean | null;
+  consentGiven?: boolean | null;
+  optOutDate?: string | null;
+  aiConversationActive?: boolean | null;
+  lastAiMessage?: string | null;
+  totalMessages?: number | null;
+  responseRate?: number | null;
+  nextFollowUp?: string | null;
+}
+
+// Lead Types (Compatible with our app)
 export interface Lead {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
-  phone?: string;
-  status: LeadStatus;
-  source: LeadSource;
-  assignedTo?: string;
-  notes?: string;
+  email?: string | null;
+  phone: string;
+  status: LeadStatus | null;
+  source: LeadSource | null;
+  assignedToId?: string | null;
+  assignedTo?: any;
+  notes?: string | null;
   documents?: Document[];
   communications: Communication[];
   createdAt: string;
   updatedAt: string;
   lastContacted?: string;
+  priority?: 'hot' | 'warm' | 'cold';
+  tags?: string[] | null;
+  propertyInterest?: any;
+  budget?: any;
+  timeline?: 'immediate' | 'one_to_three_months' | 'three_to_six_months' | 'six_to_twelve_months' | 'just_browsing';
+  preApproved?: boolean;
+  consentGiven?: boolean;
+  optOutDate?: string;
+  aiConversationActive?: boolean;
+  lastAiMessage?: string;
+  totalMessages?: number;
+  responseRate?: number | null;
+  nextFollowUp?: string;
 }
+
+// Type adapter functions
+export const adaptAmplifyLeadToLead = (amplifyLead: AmplifyLead): Lead => {
+  return {
+    ...amplifyLead,
+    lastContacted: amplifyLead.lastContacted || undefined,
+    priority: amplifyLead.priority || undefined,
+    timeline: amplifyLead.timeline || undefined,
+    preApproved: amplifyLead.preApproved || undefined,
+    consentGiven: amplifyLead.consentGiven || undefined,
+    optOutDate: amplifyLead.optOutDate || undefined,
+    aiConversationActive: amplifyLead.aiConversationActive || undefined,
+    lastAiMessage: amplifyLead.lastAiMessage || undefined,
+    totalMessages: amplifyLead.totalMessages || undefined,
+    responseRate: amplifyLead.responseRate || undefined,
+    nextFollowUp: amplifyLead.nextFollowUp || undefined,
+    documents: amplifyLead.documents ? [] : [], // Convert to Document[] if needed
+    communications: amplifyLead.communications ? [] : [], // Convert to Communication[] if needed
+  };
+};
+
+export const adaptLeadToAmplifyLead = (lead: Lead): AmplifyLead => {
+  return {
+    ...lead,
+    documents: undefined, // Remove documents for Amplify
+    communications: undefined, // Remove communications for Amplify
+  };
+};
 
 export type LeadStatus = 
   | 'new'
@@ -34,17 +108,23 @@ export type LeadStatus =
   | 'qualified'
   | 'proposal'
   | 'negotiation'
-  | 'closed_won'
-  | 'closed_lost'
-  | 'nurture';
+  | 'closedWon'
+  | 'closedLost'
+  | 'nurture'
+  | 'optedOut';
 
 export type LeadSource = 
   | 'website'
   | 'referral'
-  | 'social_media'
-  | 'cold_outreach'
+  | 'socialMedia'
+  | 'coldOutreach'
   | 'event'
   | 'advertising'
+  | 'zillow'
+  | 'realtorCom'
+  | 'homesCom'
+  | 'manualEntry'
+  | 'emailParsing'
   | 'other';
 
 // Communication Types
@@ -117,13 +197,13 @@ export interface ButtonProps {
   icon?: React.ReactNode;
   iconPosition?: 'leading' | 'trailing';
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e?: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
   className?: string;
 }
 
 export interface InputProps {
-  type?: 'text' | 'email' | 'password' | 'textarea' | 'select' | 'number' | 'tel';
+  type?: 'text' | 'email' | 'password' | 'textarea' | 'select' | 'number' | 'tel' | 'date';
   label?: string;
   placeholder?: string;
   value?: string | number;
@@ -135,9 +215,12 @@ export interface InputProps {
   min?: number;
   max?: number;
   step?: number;
+  maxLength?: number;
   icon?: React.ReactNode;
   iconPosition?: 'leading' | 'trailing';
   className?: string;
+  options?: { value: string; label: string }[];
+  rows?: number;
 }
 
 export interface CardProps {

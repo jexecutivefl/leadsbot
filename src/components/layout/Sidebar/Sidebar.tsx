@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Sidebar.module.css';
 
 interface NavigationItem {
@@ -22,14 +23,28 @@ const Sidebar: React.FC<SidebarProps> = ({
   className = '',
   ...props
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expandedSections, setExpandedSections] = useState<string[]>(['main']);
-  const [activeItem, setActiveItem] = useState('dashboard');
+  
+  // Determine active item based on current location
+  const getActiveItem = () => {
+    const path = location.pathname;
+    if (path === '/' || path === '/dashboard') return 'dashboard';
+    if (path.startsWith('/leads')) return 'leads';
+    if (path.startsWith('/analytics')) return 'analytics';
+    if (path.startsWith('/settings')) return 'settings';
+    if (path.startsWith('/ai-chat')) return 'ai-chat';
+    return 'dashboard';
+  };
+  
+  const activeItem = getActiveItem();
 
   const navigationItems: NavigationItem[] = [
     {
       id: 'dashboard',
       label: 'Dashboard',
-      path: '/dashboard',
+      path: '/',
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <rect x="3" y="3" width="7" height="7" stroke="currentColor" strokeWidth="2" rx="1"/>
@@ -114,7 +129,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     {
       id: 'settings',
       label: 'Settings',
-      path: '/settings',
+      path: '/settings/user',
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
@@ -133,8 +148,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   const handleItemClick = (item: NavigationItem) => {
-    setActiveItem(item.id);
-    console.log(`Navigate to: ${item.path}`);
+    navigate(item.path);
+    if (onClose) {
+      onClose();
+    }
   };
 
   const renderNavigationItem = (item: NavigationItem, level = 0) => {
@@ -192,7 +209,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const sidebarClasses = [
     styles.sidebar,
-    isOpen ? styles.sidebarOpen : styles.sidebarClosed,
     className
   ].filter(Boolean).join(' ');
 
@@ -204,7 +220,11 @@ const Sidebar: React.FC<SidebarProps> = ({
       )}
       
       {/* Sidebar */}
-      <aside className={sidebarClasses} {...props}>
+      <aside 
+        className={sidebarClasses} 
+        data-open={isOpen}
+        {...props}
+      >
         <div className={styles.sidebarContent}>
           {/* Sidebar Header */}
           <div className={styles.sidebarHeader}>
@@ -240,7 +260,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </nav>
 
-          {/* User Profile Section */}
+          {/* Sidebar Footer */}
           <div className={styles.sidebarFooter}>
             <div className={styles.userProfile}>
               <img

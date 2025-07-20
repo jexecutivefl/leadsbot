@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Login.module.css';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Card from '../../../components/ui/Card';
+import { useAuth } from '../../../contexts/AuthContext';
 
 interface LoginFormData {
   email: string;
@@ -20,6 +22,10 @@ const Login: React.FC<LoginPageProps> = ({
   className = '',
   ...props
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signInUser } = useAuth();
+  
   const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -27,6 +33,7 @@ const Login: React.FC<LoginPageProps> = ({
   });
   const [errors, setErrors] = useState<Partial<LoginFormData>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState<string>('');
 
   const validateForm = (): boolean => {
     const newErrors: Partial<LoginFormData> = {};
@@ -41,8 +48,6 @@ const Login: React.FC<LoginPageProps> = ({
     // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -62,6 +67,11 @@ const Login: React.FC<LoginPageProps> = ({
         [field]: undefined
       }));
     }
+    
+    // Clear auth error when user starts typing
+    if (authError) {
+      setAuthError('');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,34 +82,41 @@ const Login: React.FC<LoginPageProps> = ({
     }
 
     setIsLoading(true);
+    setAuthError('');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await signInUser({
+        username: formData.email,
+        password: formData.password,
+      });
       
-      if (onLogin) {
-        onLogin(formData);
-      } else {
-        console.log('Login attempted with:', formData);
-        // Simulate successful login
-        alert('Login successful! (This is a demo)');
-      }
-    } catch (error) {
+      // Redirect to the page they were trying to access or dashboard
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
+    } catch (error: any) {
       console.error('Login error:', error);
-      setErrors({ email: 'Invalid email or password' });
+      
+      // Handle specific Amplify auth errors
+      if (error.name === 'UserNotConfirmedException') {
+        setAuthError('Please confirm your email address before signing in.');
+      } else if (error.name === 'NotAuthorizedException') {
+        setAuthError('Invalid email or password.');
+      } else if (error.name === 'UserNotFoundException') {
+        setAuthError('No account found with this email address.');
+      } else {
+        setAuthError('An error occurred during sign in. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleForgotPassword = () => {
-    console.log('Forgot password clicked');
-    alert('Forgot password functionality would be implemented here');
+    navigate('/forgot-password');
   };
 
   const handleSignUp = () => {
-    console.log('Sign up clicked');
-    alert('Sign up page would be navigated to here');
+    navigate('/register');
   };
 
   const loginClasses = [
@@ -143,6 +160,12 @@ const Login: React.FC<LoginPageProps> = ({
               Sign in to your Leadsbot account to continue managing your leads
             </p>
           </div>
+
+          {authError && (
+            <div className={styles.errorMessage}>
+              {authError}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className={styles.loginForm}>
             <div className={styles.formGroup}>
@@ -238,20 +261,6 @@ const Login: React.FC<LoginPageProps> = ({
             </p>
           </div>
         </Card>
-
-        {/* Demo Credentials */}
-        <div className={styles.demoInfo}>
-          <Card variant="outlined" className={styles.demoCard}>
-            <h3 className={styles.demoTitle}>Demo Credentials</h3>
-            <p className={styles.demoText}>
-              <strong>Email:</strong> demo@leadsbot.com<br />
-              <strong>Password:</strong> password123
-            </p>
-            <p className={styles.demoNote}>
-              These are demo credentials for testing purposes
-            </p>
-          </Card>
-        </div>
       </div>
     </div>
   );

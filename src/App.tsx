@@ -1,135 +1,111 @@
-import { useState } from 'react';
-import './App.css';
-import Layout from './components/layout/Layout';
-import Login from './pages/auth/Login';
-import Dashboard from './pages/dashboard';
-import LeadsPage from './pages/leads';
-import UserSettings from './pages/settings/UserSettings';
-import SystemSettings from './pages/settings/SystemSettings';
+import { Suspense, lazy } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
+import { Layout } from './components/layout/Layout'
+import ProtectedRoute from './components/auth/ProtectedRoute'
+import { Login } from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import NotFoundPage from './pages/NotFoundPage'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import './App.css'
 
-type CurrentPage = 'login' | 'dashboard' | 'leads' | 'user-settings' | 'system-settings';
+// Lazy load pages for better performance
+const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'))
+const LeadsPage = lazy(() => import('./pages/leads/LeadsPage'))
+const LeadDetailPage = lazy(() => import('./pages/leads/LeadDetailPage'))
+const NewLeadPage = lazy(() => import('./pages/leads/NewLeadPage'))
+const QualifiedLeadsPage = lazy(() => import('./pages/leads/QualifiedLeadsPage'))
+const AnalyticsPage = lazy(() => import('./pages/analytics/AnalyticsPage'))
+const AIChatPage = lazy(() => import('./pages/ai-chat/AIChatPage'))
+const UserSettings = lazy(() => import('./pages/settings/UserSettings'))
+const SystemSettings = lazy(() => import('./pages/settings/SystemSettings'))
+
+// Loading component
+const LoadingSpinner = () => (
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: '100vh',
+    fontSize: '1.2rem',
+    color: 'var(--color-gray-600)'
+  }}>
+    <div>Loading...</div>
+  </div>
+)
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<CurrentPage>('login');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-    setCurrentPage('dashboard');
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setCurrentPage('login');
-  };
-
-  // Show login page if not authenticated
-  if (!isAuthenticated || currentPage === 'login') {
-    return <Login onLogin={handleLogin} />;
-  }
-
-  // Show main application with layout
   return (
-    <Layout>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          padding: '1rem',
-          backgroundColor: 'var(--color-primary-50)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--color-primary-200)'
-        }}>
-          <div>
-            <h2 style={{ margin: 0, color: 'var(--color-primary-800)' }}>
-              🤖 Phase 4 Complete!
-            </h2>
-            <p style={{ margin: '0.5rem 0 0 0', color: 'var(--color-primary-700)' }}>
-              AI Integration & Settings - Chat Interface, AI Configuration & System Settings
-            </p>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <Routes>
+              {/* Public routes */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              
+              {/* Protected routes */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }>
+                <Route index element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Dashboard />
+                  </Suspense>
+                } />
+                <Route path="leads" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <LeadsPage />
+                  </Suspense>
+                } />
+                <Route path="leads/:id" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <LeadDetailPage />
+                  </Suspense>
+                } />
+                <Route path="leads/new" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <NewLeadPage />
+                  </Suspense>
+                } />
+                <Route path="leads/qualified" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <QualifiedLeadsPage />
+                  </Suspense>
+                } />
+                <Route path="analytics" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AnalyticsPage />
+                  </Suspense>
+                } />
+                <Route path="ai-chat" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AIChatPage />
+                  </Suspense>
+                } />
+                <Route path="settings" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <UserSettings />
+                  </Suspense>
+                } />
+                <Route path="settings/system" element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <SystemSettings />
+                  </Suspense>
+                } />
+              </Route>
+              
+              {/* 404 route */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setCurrentPage('dashboard')}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'dashboard' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              Dashboard
-            </button>
-            <button
-              onClick={() => setCurrentPage('leads')}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'leads' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              Leads
-            </button>
-            <button
-              onClick={() => setCurrentPage('user-settings')}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'user-settings' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              User Settings
-            </button>
-            <button
-              onClick={() => setCurrentPage('system-settings')}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: currentPage === 'system-settings' ? 'var(--color-primary-600)' : 'var(--color-primary-400)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              System Settings
-            </button>
-            <button
-              onClick={handleLogout}
-              style={{
-                padding: '0.5rem 1rem',
-                backgroundColor: 'var(--color-gray-600)',
-                color: 'white',
-                border: 'none',
-                borderRadius: 'var(--radius-md)',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {currentPage === 'dashboard' && <Dashboard />}
-      {currentPage === 'leads' && <LeadsPage />}
-      {currentPage === 'user-settings' && <UserSettings />}
-      {currentPage === 'system-settings' && <SystemSettings />}
-    </Layout>
-  );
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
+  )
 }
 
-export default App;
+export default App

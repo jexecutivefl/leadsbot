@@ -1,0 +1,18 @@
+.newLeadPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .newLeadPage {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .newLeadPage {
+    padding: var(--space-3);
+  }
+} 

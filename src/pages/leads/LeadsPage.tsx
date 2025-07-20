@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styles from './LeadsPage.module.css';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import Card from '../../components/ui/Card';
-import Table from '../../components/ui/Table';
-import LeadCard from '../../components/leads/LeadCard';
-import { Lead, TableColumn, TablePagination } from '../../types';
+import { Button } from '../../components/ui/Button';
+import { Input } from '../../components/ui/Input';
+import { Card } from '../../components/ui/Card';
+import { Table } from '../../components/ui/Table';
+import { LeadCard } from '../../components/leads/LeadCard';
+import { Lead, AmplifyLead, adaptAmplifyLeadToLead, TableColumn, TablePagination } from '../../types';
+import { leadService } from '../../services/leadService';
 
 type ViewMode = 'table' | 'cards';
 
@@ -30,138 +31,15 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Mock data - In real app, this would come from API
+  // Fetch leads from API
   useEffect(() => {
     const fetchLeads = async () => {
       setLoading(true);
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        const mockLeads: Lead[] = [
-          {
-            id: '1',
-            firstName: 'Sarah',
-            lastName: 'Johnson',
-            email: 'sarah.johnson@email.com',
-            phone: '+1 (555) 123-4567',
-            status: 'new',
-            source: 'website',
-            assignedTo: 'John Doe',
-            notes: 'Interested in premium package. Follow up next week.',
-            documents: [],
-            communications: [
-                                            {
-                 id: '1',
-                 leadId: '1',
-                 type: 'email',
-                 direction: 'inbound',
-                 content: 'Hi, I\'m interested in your services...',
-                 timestamp: '2024-01-15T10:30:00Z',
-                 status: 'delivered'
-               }
-            ],
-            createdAt: '2024-01-15T10:30:00Z',
-            updatedAt: '2024-01-15T10:30:00Z',
-            lastContacted: '2024-01-15T10:30:00Z'
-          },
-          {
-            id: '2',
-            firstName: 'Michael',
-            lastName: 'Chen',
-            email: 'michael.chen@email.com',
-            phone: '+1 (555) 234-5678',
-            status: 'contacted',
-            source: 'referral',
-            assignedTo: 'Jane Smith',
-            notes: 'Referral from existing client. Very interested.',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-14T09:15:00Z',
-            updatedAt: '2024-01-15T14:20:00Z',
-            lastContacted: '2024-01-15T14:20:00Z'
-          },
-          {
-            id: '3',
-            firstName: 'Emily',
-            lastName: 'Davis',
-            email: 'emily.davis@email.com',
-            phone: '+1 (555) 345-6789',
-            status: 'qualified',
-            source: 'social_media',
-            assignedTo: 'John Doe',
-            notes: 'Budget confirmed. Ready to move forward.',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-13T08:45:00Z',
-            updatedAt: '2024-01-14T16:30:00Z',
-            lastContacted: '2024-01-14T16:30:00Z'
-          },
-          {
-            id: '4',
-            firstName: 'David',
-            lastName: 'Wilson',
-            email: 'david.wilson@email.com',
-            phone: '+1 (555) 456-7890',
-            status: 'proposal',
-            source: 'cold_outreach',
-            assignedTo: 'Jane Smith',
-            notes: 'Proposal sent. Waiting for response.',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-12T16:20:00Z',
-            updatedAt: '2024-01-13T11:45:00Z',
-            lastContacted: '2024-01-13T11:45:00Z'
-          },
-          {
-            id: '5',
-            firstName: 'Lisa',
-            lastName: 'Thompson',
-            email: 'lisa.thompson@email.com',
-            phone: '+1 (555) 567-8901',
-            status: 'new',
-            source: 'website',
-            assignedTo: 'John Doe',
-            notes: 'Downloaded whitepaper. Potential high-value client.',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-11T14:10:00Z',
-            updatedAt: '2024-01-11T14:10:00Z'
-          },
-          {
-            id: '6',
-            firstName: 'Robert',
-            lastName: 'Brown',
-            email: 'robert.brown@email.com',
-            phone: '+1 (555) 678-9012',
-            status: 'negotiation',
-            source: 'event',
-            assignedTo: 'Jane Smith',
-            notes: 'Met at conference. Negotiating contract terms.',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-10T11:30:00Z',
-            updatedAt: '2024-01-14T09:20:00Z',
-            lastContacted: '2024-01-14T09:20:00Z'
-          },
-          {
-            id: '7',
-            firstName: 'Amanda',
-            lastName: 'Garcia',
-            email: 'amanda.garcia@email.com',
-            status: 'closed_won',
-            source: 'advertising',
-            assignedTo: 'John Doe',
-            notes: 'Deal closed successfully!',
-            documents: [],
-            communications: [],
-            createdAt: '2024-01-09T13:15:00Z',
-            updatedAt: '2024-01-12T10:30:00Z',
-            lastContacted: '2024-01-12T10:30:00Z'
-          }
-        ];
-        
-        setLeads(mockLeads);
+        const leadsData = await leadService.listLeads();
+        // Convert AmplifyLead[] to Lead[] for our app
+        const convertedLeads = leadsData.map(lead => adaptAmplifyLeadToLead(lead as AmplifyLead));
+        setLeads(convertedLeads);
       } catch (error) {
         console.error('Error fetching leads:', error);
       } finally {
@@ -178,7 +56,7 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
       const matchesSearch = 
         lead.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         lead.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        lead.email.toLowerCase().includes(searchQuery.toLowerCase());
+        (lead.email && lead.email.toLowerCase().includes(searchQuery.toLowerCase()));
       
       const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
       const matchesSource = sourceFilter === 'all' || lead.source === sourceFilter;
@@ -231,7 +109,7 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
               {lead.firstName} {lead.lastName}
             </div>
             <div className={styles.avatarEmail}>
-              {lead.email}
+              {lead.email || 'No email'}
             </div>
           </div>
         </div>
@@ -249,9 +127,9 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
       render: (lead) => (
         <span 
           className={styles.statusBadge}
-          style={{ backgroundColor: getStatusColor(lead.status) }}
+          style={{ backgroundColor: getStatusColor(lead.status || 'new') }}
         >
-          {lead.status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {(lead.status || 'new').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
         </span>
       )
     },
@@ -260,7 +138,7 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
       header: 'Source',
       sortable: true,
       render: (lead) => (
-        lead.source.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
+        (lead.source || 'other').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
       )
     },
     {
