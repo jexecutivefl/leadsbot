@@ -5,6 +5,7 @@ import { Input } from '../../components/ui/Input';
 import { Card } from '../../components/ui/Card';
 import { Table } from '../../components/ui/Table';
 import { LeadCard } from '../../components/leads/LeadCard';
+import CSVImport from '../../components/leads/CSVImport';
 import { Lead, AmplifyLead, adaptAmplifyLeadToLead, TableColumn, TablePagination } from '../../types';
 import { leadService } from '../../services/leadService';
 
@@ -29,24 +30,25 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
   const [sourceFilter, setSourceFilter] = useState<FilterSource>('all');
   const [selectedLeads, setSelectedLeads] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showCSVImport, setShowCSVImport] = useState(false);
   const itemsPerPage = 10;
 
   // Fetch leads from API
-  useEffect(() => {
-    const fetchLeads = async () => {
-      setLoading(true);
-      try {
-        const leadsData = await leadService.listLeads();
-        // Convert AmplifyLead[] to Lead[] for our app
-        const convertedLeads = leadsData.map(lead => adaptAmplifyLeadToLead(lead as AmplifyLead));
-        setLeads(convertedLeads);
-      } catch (error) {
-        console.error('Error fetching leads:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchLeads = async () => {
+    setLoading(true);
+    try {
+      const leadsData = await leadService.listLeads();
+      // Convert AmplifyLead[] to Lead[] for our app
+      const convertedLeads = leadsData.map(lead => adaptAmplifyLeadToLead(lead as AmplifyLead));
+      setLeads(convertedLeads);
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchLeads();
   }, []);
 
@@ -98,19 +100,15 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
     {
       key: 'name',
       header: 'Name',
-      sortable: true,
       render: (lead) => (
-        <div className={styles.tableAvatar}>
-          <div className={styles.avatarInitials}>
-            {lead.firstName[0]}{lead.lastName[0]}
-          </div>
-          <div className={styles.avatarInfo}>
-            <div className={styles.avatarName}>
+        <div className={styles.nameCell}>
+          <div className={styles.nameInfo}>
+            <span className={styles.fullName}>
               {lead.firstName} {lead.lastName}
-            </div>
-            <div className={styles.avatarEmail}>
-              {lead.email || 'No email'}
-            </div>
+            </span>
+            {lead.email && (
+              <span className={styles.email}>{lead.email}</span>
+            )}
           </div>
         </div>
       )
@@ -118,60 +116,81 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
     {
       key: 'phone',
       header: 'Phone',
-      render: (lead) => lead.phone || '—'
+      render: (lead) => lead.phone
     },
     {
       key: 'status',
       header: 'Status',
-      sortable: true,
       render: (lead) => (
         <span 
           className={styles.statusBadge}
           style={{ backgroundColor: getStatusColor(lead.status || 'new') }}
         >
-          {(lead.status || 'new').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+          {(lead.status || 'new').replace('_', ' ').toUpperCase()}
         </span>
       )
     },
     {
       key: 'source',
       header: 'Source',
-      sortable: true,
       render: (lead) => (
-        (lead.source || 'other').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())
+        <span className={styles.sourceBadge}>
+          {(lead.source || 'other').replace('_', ' ').toUpperCase()}
+        </span>
       )
     },
     {
-      key: 'assignedTo',
-      header: 'Assigned To',
-      render: (lead) => lead.assignedTo || '—'
-    },
-    {
-      key: 'createdAt',
-      header: 'Created',
-      sortable: true,
-      render: (lead) => new Date(lead.createdAt).toLocaleDateString()
+      key: 'priority',
+      header: 'Priority',
+      render: (lead) => (
+        <span className={`${styles.priorityBadge} ${styles[`priority-${lead.priority || 'warm'}`]}`}>
+          {(lead.priority || 'warm').toUpperCase()}
+        </span>
+      )
     },
     {
       key: 'actions',
       header: 'Actions',
-      width: '160px',
       render: (lead) => (
-        <div className={styles.tableActions}>
-                     <Button 
-             variant="ghost" 
-             size="small"
-             onClick={() => handleViewLead(lead)}
-           >
-             View
-           </Button>
-           <Button 
-             variant="outline" 
-             size="small"
-             onClick={() => handleEditLead(lead)}
-           >
-             Edit
-           </Button>
+        <div className={styles.actionButtons}>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={() => handleViewLead(lead)}
+            icon={
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2"/>
+                <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            }
+          >
+            View
+          </Button>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={() => handleEditLead(lead)}
+            icon={
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" stroke="currentColor" strokeWidth="2"/>
+                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            }
+          >
+            Edit
+          </Button>
+          <Button
+            variant="ghost"
+            size="small"
+            onClick={() => handleContactLead(lead)}
+            icon={
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M22 2H2l8 9.46V19l4-2v-8.54L22 2z" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+            }
+          >
+            Contact
+          </Button>
         </div>
       )
     }
@@ -185,17 +204,17 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
 
   const handleEditLead = (lead: Lead) => {
     console.log('Edit lead:', lead);
-    // Open edit modal or navigate to edit page
+    // Open edit lead modal
   };
 
   const handleContactLead = (lead: Lead) => {
     console.log('Contact lead:', lead);
-    // Open contact modal or action
+    // Open contact lead modal
   };
 
   const handleDeleteLead = (lead: Lead) => {
     console.log('Delete lead:', lead);
-    // Show confirmation and delete
+    // Show delete confirmation
   };
 
   const handleBulkAction = (action: string) => {
@@ -206,6 +225,17 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
   const handleAddLead = () => {
     console.log('Add new lead');
     // Open add lead modal or navigate to form
+  };
+
+  const handleImportLeads = () => {
+    setShowCSVImport(true);
+  };
+
+  const handleImportComplete = (importedCount: number) => {
+    setShowCSVImport(false);
+    // Refresh the leads list
+    fetchLeads();
+    console.log(`Imported ${importedCount} leads`);
   };
 
   const clearFilters = () => {
@@ -222,6 +252,16 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
 
   return (
     <div className={leadsPageClasses} {...props}>
+      {/* CSV Import Modal */}
+      {showCSVImport && (
+        <div className={styles.modalOverlay}>
+          <CSVImport
+            onImportComplete={handleImportComplete}
+            onClose={() => setShowCSVImport(false)}
+          />
+        </div>
+      )}
+
       {/* Page Header */}
       <div className={styles.pageHeader}>
         <div className={styles.headerContent}>
@@ -231,7 +271,7 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
           </p>
         </div>
         <div className={styles.headerActions}>
-          <Button variant="outline" size="medium">
+          <Button variant="outline" size="medium" onClick={handleImportLeads}>
             Import Leads
           </Button>
           <Button variant="primary" size="medium" onClick={handleAddLead}>
@@ -244,8 +284,8 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
       <Card className={styles.filtersCard}>
         <div className={styles.filtersContent}>
           <div className={styles.searchSection}>
-                         <Input
-               type="text"
+            <Input
+              type="text"
               placeholder="Search leads by name or email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -299,167 +339,114 @@ const LeadsPage: React.FC<LeadsPageProps> = ({
 
           <div className={styles.viewToggle}>
             <Button
-              variant={viewMode === 'table' ? 'primary' : 'ghost'}
-              size="medium"
+              variant={viewMode === 'table' ? 'primary' : 'outline'}
+              size="small"
               onClick={() => setViewMode('table')}
+              icon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 3h18v18H3zM9 9h6v6H9z" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              }
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="3" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
-                <rect x="14" y="3" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
-                <rect x="14" y="14" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
-                <rect x="3" y="14" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
-              </svg>
               Table
             </Button>
             <Button
-              variant={viewMode === 'cards' ? 'primary' : 'ghost'}
-              size="medium"
+              variant={viewMode === 'cards' ? 'primary' : 'outline'}
+              size="small"
               onClick={() => setViewMode('cards')}
+              icon={
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="14" y="3" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="3" y="14" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
+                  <rect x="14" y="14" width="7" height="7" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+              }
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" strokeWidth="2"/>
-                <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" strokeWidth="2"/>
-                <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" strokeWidth="2"/>
-                <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" strokeWidth="2"/>
-              </svg>
               Cards
             </Button>
           </div>
         </div>
       </Card>
 
-      {/* Bulk Actions */}
-      {selectedLeads.length > 0 && (
-        <Card className={styles.bulkActionsCard}>
-          <div className={styles.bulkActionsContent}>
-            <span className={styles.selectionCount}>
-              {selectedLeads.length} lead{selectedLeads.length !== 1 ? 's' : ''} selected
-            </span>
-            <div className={styles.bulkActions}>
-              <Button variant="outline" size="small" onClick={() => handleBulkAction('assign')}>
-                Assign To
+      {/* Content */}
+      {loading ? (
+        <Card className={styles.loadingCard}>
+          <div className={styles.loadingContent}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Loading leads...</p>
+          </div>
+        </Card>
+      ) : filteredLeads.length === 0 ? (
+        <Card className={styles.emptyCard}>
+          <div className={styles.emptyContent}>
+            <div className={styles.emptyIcon}>📋</div>
+            <h3>No leads found</h3>
+            <p>
+              {searchQuery || statusFilter !== 'all' || sourceFilter !== 'all'
+                ? 'Try adjusting your filters or search terms.'
+                : 'Get started by adding your first lead or importing from a CSV file.'}
+            </p>
+            <div className={styles.emptyActions}>
+              <Button variant="primary" onClick={handleAddLead}>
+                Add First Lead
               </Button>
-              <Button variant="outline" size="small" onClick={() => handleBulkAction('status')}>
-                Change Status
-              </Button>
-              <Button variant="outline" size="small" onClick={() => handleBulkAction('export')}>
-                Export
-              </Button>
-              <Button variant="destructive" size="small" onClick={() => handleBulkAction('delete')}>
-                Delete
+              <Button variant="outline" onClick={handleImportLeads}>
+                Import from CSV
               </Button>
             </div>
           </div>
         </Card>
-      )}
-
-      {/* Results Count */}
-      <div className={styles.resultsInfo}>
-        <span className={styles.resultsCount}>
-          {filteredLeads.length} lead{filteredLeads.length !== 1 ? 's' : ''} found
-        </span>
-      </div>
-
-      {/* Content */}
-      {viewMode === 'table' ? (
-        <Table
-          data={paginatedLeads}
-          columns={columns}
-          loading={loading}
-          emptyMessage="No leads found. Try adjusting your filters or add a new lead."
-          onRowClick={handleViewLead}
-          selectedRows={selectedLeads}
-          onSelectionChange={setSelectedLeads}
-          pagination={pagination}
-          className={styles.leadsTable}
-        />
       ) : (
-        <div className={styles.cardsContainer}>
-          {loading ? (
-            <div className={styles.cardsLoading}>
-              <div className={styles.loadingSpinner}>
-                <svg
-                  className={styles.spinner}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeDasharray="31.416"
-                    strokeDashoffset="31.416"
-                  />
-                </svg>
-              </div>
-              <p>Loading leads...</p>
-            </div>
-          ) : paginatedLeads.length === 0 ? (
-            <div className={styles.emptyState}>
-              <svg
-                className={styles.emptyIcon}
-                width="64"
-                height="64"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2"/>
-                <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2"/>
-              </svg>
-              <h3 className={styles.emptyTitle}>No leads found</h3>
-              <p className={styles.emptyMessage}>
-                Try adjusting your filters or add a new lead to get started.
-              </p>
-              <Button variant="primary" onClick={handleAddLead}>
-                Add Lead
-              </Button>
-            </div>
-          ) : (
-            <>
-              <div className={styles.cardsGrid}>
-                {paginatedLeads.map(lead => (
-                  <LeadCard
-                    key={lead.id}
-                    lead={lead}
-                    onView={handleViewLead}
-                    onEdit={handleEditLead}
-                    onContact={handleContactLead}
-                    onDelete={handleDeleteLead}
-                  />
-                ))}
-              </div>
-              
-              {totalPages > 1 && (
-                <div className={styles.cardsPagination}>
-                  <Button
-                    variant="outline"
-                    size="medium"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(currentPage - 1)}
-                  >
-                    Previous
+        <>
+          {/* Bulk Actions */}
+          {selectedLeads.length > 0 && (
+            <Card className={styles.bulkActionsCard}>
+              <div className={styles.bulkActionsContent}>
+                <span className={styles.bulkActionsText}>
+                  {selectedLeads.length} lead{selectedLeads.length !== 1 ? 's' : ''} selected
+                </span>
+                <div className={styles.bulkActionsButtons}>
+                  <Button variant="outline" size="small" onClick={() => handleBulkAction('contact')}>
+                    Contact All
                   </Button>
-                  <span className={styles.paginationInfo}>
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="medium"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(currentPage + 1)}
-                  >
-                    Next
+                  <Button variant="outline" size="small" onClick={() => handleBulkAction('export')}>
+                    Export
+                  </Button>
+                  <Button variant="outline" size="small" onClick={() => handleBulkAction('delete')}>
+                    Delete
                   </Button>
                 </div>
-              )}
-            </>
+              </div>
+            </Card>
           )}
-        </div>
+
+          {/* Leads Display */}
+          {viewMode === 'table' ? (
+            <Card className={styles.tableCard}>
+              <Table
+                data={paginatedLeads}
+                columns={columns}
+                pagination={pagination}
+                onSelectionChange={setSelectedLeads}
+                className={styles.leadsTable}
+              />
+            </Card>
+          ) : (
+            <div className={styles.cardsGrid}>
+              {paginatedLeads.map((lead) => (
+                <LeadCard
+                  key={lead.id}
+                  lead={lead}
+                  onView={handleViewLead}
+                  onEdit={handleEditLead}
+                  onContact={handleContactLead}
+                  onDelete={handleDeleteLead}
+                />
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

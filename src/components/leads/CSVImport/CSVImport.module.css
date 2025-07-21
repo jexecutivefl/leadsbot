@@ -1,0 +1,243 @@
+.csvImport {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.header h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: var(--text-xl);
+  color: var(--color-gray-500);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-gray-700);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.uploadArea {
+  position: relative;
+}
+
+.fileInput {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.dropZone {
+  display: block;
+  border: 2px dashed var(--color-gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--color-gray-50);
+}
+
+.dropZone:hover {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-50);
+}
+
+.dropZoneContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.uploadIcon {
+  font-size: var(--text-4xl);
+  color: var(--color-gray-400);
+}
+
+.dropZoneContent p {
+  margin: 0;
+  font-size: var(--text-lg);
+  color: var(--color-gray-700);
+  font-weight: 500;
+}
+
+.fileTypes {
+  font-size: var(--text-sm) !important;
+  color: var(--color-gray-500) !important;
+  font-weight: 400 !important;
+}
+
+.fileInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  background-color: var(--color-primary-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary-200);
+}
+
+.fileInfo span {
+  font-size: var(--text-sm);
+  color: var(--color-primary-700);
+  font-weight: 500;
+}
+
+.error {
+  padding: var(--space-4);
+  background-color: var(--color-error);
+  color: white;
+  border-radius: var(--radius-md);
+}
+
+.error p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.success {
+  padding: var(--space-4);
+  background-color: var(--color-success);
+  color: white;
+  border-radius: var(--radius-md);
+}
+
+.success p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.preview {
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.preview h4 {
+  margin: 0;
+  padding: var(--space-4);
+  background-color: var(--color-gray-50);
+  border-bottom: 1px solid var(--color-gray-200);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.previewTable {
+  overflow-x: auto;
+}
+
+.previewTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.previewTable th,
+.previewTable td {
+  padding: var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.previewTable th {
+  background-color: var(--color-gray-50);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  font-size: var(--text-sm);
+}
+
+.previewTable td {
+  font-size: var(--text-sm);
+  color: var(--color-gray-900);
+}
+
+.previewTable tr:hover {
+  background-color: var(--color-gray-50);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.help {
+  background-color: var(--color-gray-50);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.help h4 {
+  margin: 0 0 var(--space-3) 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.help ul {
+  margin: 0;
+  padding-left: var(--space-4);
+}
+
+.help li {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-gray-700);
+  line-height: 1.5;
+}
+
+.help strong {
+  color: var(--color-gray-900);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .csvImport {
+    margin: 0 var(--space-4);
+  }
+
+  .dropZone {
+    padding: var(--space-8);
+  }
+
+  .fileInfo {
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+
+  .previewTable {
+    font-size: var(--text-xs);
+  }
+
+  .previewTable th,
+  .previewTable td {
+    padding: var(--space-2);
+  }
+} 

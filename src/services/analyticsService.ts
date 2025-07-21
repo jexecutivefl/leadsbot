@@ -189,9 +189,22 @@ class AnalyticsService {
     })
 
     return Object.entries(sourceCount).map(([source, count]) => ({
-      name: source,
+      name: this.formatSourceName(source),
       value: count
     }))
+  }
+
+  // Format source name for display
+  private formatSourceName(source: string): string {
+    const sourceMap: { [key: string]: string } = {
+      'website': 'Website',
+      'socialMedia': 'Social Media',
+      'referral': 'Referral',
+      'email': 'Email',
+      'phone': 'Phone',
+      'other': 'Other'
+    }
+    return sourceMap[source] || source.charAt(0).toUpperCase() + source.slice(1)
   }
 
   // Calculate conversion rate trends
@@ -247,15 +260,33 @@ class AnalyticsService {
   private calculateStatusDistribution(leads: Lead[]): ChartData[] {
     const statusCount: { [key: string]: number } = {}
     
+    // Initialize all possible statuses with 0
+    const allStatuses = ['new', 'contacted', 'qualified', 'follow-up']
+    allStatuses.forEach(status => {
+      statusCount[status] = 0
+    })
+    
+    // Count actual statuses
     leads.forEach(lead => {
-      const status = lead.status || 'unknown'
+      const status = lead.status || 'new'
       statusCount[status] = (statusCount[status] || 0) + 1
     })
 
     return Object.entries(statusCount).map(([status, count]) => ({
-      name: status.charAt(0).toUpperCase() + status.slice(1),
+      name: this.formatStatusName(status),
       value: count
     }))
+  }
+
+  // Format status name for display
+  private formatStatusName(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'new': 'New',
+      'contacted': 'Contacted',
+      'qualified': 'Qualified',
+      'follow-up': 'Follow-up'
+    }
+    return statusMap[status] || status.charAt(0).toUpperCase() + status.slice(1)
   }
 
   // Get change percentage for metrics

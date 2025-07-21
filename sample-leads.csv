@@ -1,0 +1,11 @@
+firstName,lastName,email,phone,status,source,priority,timeline,notes
+John,Smith,john.smith@email.com,555-0101,new,website,hot,immediate,Interested in 3-bedroom homes
+Sarah,Johnson,sarah.j@email.com,555-0102,contacted,referral,warm,one_to_three_months,Looking for investment property
+Mike,Davis,mike.davis@email.com,555-0103,qualified,zillow,hot,immediate,Ready to buy, pre-approved
+Lisa,Wilson,lisa.wilson@email.com,555-0104,new,socialMedia,cold,just_browsing,Just starting to look
+David,Brown,david.brown@email.com,555-0105,proposal,website,warm,three_to_six_months,Interested in downtown condos
+Emma,Taylor,emma.t@email.com,555-0106,negotiation,referral,hot,immediate,Multiple offers received
+James,Anderson,james.anderson@email.com,555-0107,new,coldOutreach,cold,six_to_twelve_months,Needs more information
+Maria,Garcia,maria.garcia@email.com,555-0108,contacted,event,warm,one_to_three_months,Met at open house
+Robert,Miller,robert.miller@email.com,555-0109,qualified,realtorCom,hot,immediate,Looking for luxury homes
+Jennifer,Lee,jennifer.lee@email.com,555-0110,new,advertising,cold,just_browsing,Responded to online ad 

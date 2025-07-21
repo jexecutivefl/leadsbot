@@ -98,7 +98,7 @@ const schema = a.schema({
 
   Communication: a
     .model({
-      leadId: a.id().required(), // Reference to Lead
+      leadId: a.id(), // Reference to Lead (optional for general AI conversations)
       lead: a.belongsTo('Lead', 'leadId'),
       userId: a.id(), // Reference to User (if human intervention)
       user: a.belongsTo('User', 'userId'),
@@ -200,12 +200,12 @@ const schema = a.schema({
 
   Conversation: a
     .model({
-      leadId: a.id().required(), // Reference to Lead
+      leadId: a.id(), // Reference to Lead (optional for general AI conversations)
       lead: a.belongsTo('Lead', 'leadId'),
       userId: a.id(), // Reference to User (agent)
       user: a.belongsTo('User', 'userId'),
       status: a.enum(['active', 'paused', 'completed', 'handedOff']),
-      channel: a.enum(['sms', 'email', 'whatsapp', 'voice']),
+      channel: a.enum(['sms', 'email', 'whatsapp', 'voice', 'aiChat']),
       lastMessageAt: a.datetime(),
       messageCount: a.integer().default(0),
       aiHandling: a.boolean().default(true),

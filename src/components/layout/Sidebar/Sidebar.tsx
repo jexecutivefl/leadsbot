@@ -223,6 +223,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       <aside 
         className={sidebarClasses} 
         data-open={isOpen}
+        data-testid="sidebar"
         {...props}
       >
         <div className={styles.sidebarContent}>

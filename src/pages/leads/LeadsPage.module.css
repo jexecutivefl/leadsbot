@@ -640,3 +640,184 @@
     transform: none;
   }
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
+}
+
+.loadingCard {
+  text-align: center;
+  padding: var(--space-12);
+}
+
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-gray-200);
+  border-top: 3px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.emptyCard {
+  text-align: center;
+  padding: var(--space-12);
+}
+
+.emptyContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.emptyIcon {
+  font-size: var(--text-4xl);
+  color: var(--color-gray-400);
+}
+
+.emptyContent h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-gray-900);
+  margin: 0;
+}
+
+.emptyContent p {
+  font-size: var(--text-base);
+  color: var(--color-gray-600);
+  margin: 0;
+  max-width: 400px;
+}
+
+.emptyActions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.nameCell {
+  display: flex;
+  align-items: center;
+}
+
+.nameInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fullName {
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.email {
+  font-size: var(--text-sm);
+  color: var(--color-gray-600);
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sourceBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: var(--color-gray-100);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priorityBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-hot {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.priority-warm {
+  background-color: var(--color-warning);
+  color: white;
+}
+
+.priority-cold {
+  background-color: var(--color-gray-500);
+  color: white;
+}
+
+.actionButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.bulkActionsCard {
+  margin-bottom: var(--space-4);
+}
+
+.bulkActionsContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bulkActionsText {
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+.bulkActionsButtons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.tableCard {
+  overflow: hidden;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
